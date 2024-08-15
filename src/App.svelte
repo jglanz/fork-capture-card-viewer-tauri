@@ -26,26 +26,33 @@
   async function getSources() {
     // @ts-ignore
     await navigator.getUserMedia(
-      { audio: true, video: true },
+      { audio: true, video: {
+          width: {
+            ideal: 3840
+          },
+          height: {
+            ideal: 2160
+          }
+        } },
       () => {
         navigator.mediaDevices.enumerateDevices().then((devices) => {
           videoDevices = devices.filter((device) =>
             device.kind.includes("video")
-          );
+          )
           audioDevices = devices.filter((device) =>
             device.kind.includes("audio")
-          );
-        });
+          )
+        })
       },
       (err) => {
         errorMsg(
           "Permissions have not been granted to use your camera and " +
-            "microphone, you need to allow the page access to your devices in " +
-            "order for the application to work." +
-            `${err}`
-        );
+          "microphone, you need to allow the page access to your devices in " +
+          "order for the application to work." +
+          `${err}`
+        )
       }
-    );
+    )
   }
 
   // Change the source to preview.
@@ -60,6 +67,7 @@
     let constraints = {};
     constraints[sourceType] = {
       deviceId: source,
+
     };
 
     // Create a Stream for new source.
